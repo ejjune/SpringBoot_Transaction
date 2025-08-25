@@ -1,22 +1,33 @@
 package com.simple.transaction.service.model;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 public class TransactionModel {
 
-    private Long id;
+  @NotNull(message = "Missing userId")
+  @Positive(message = "userId must be greater than 0")
+  private Long userId;
 
-    private Long userId;
+  @NotNull(message = "Missing amount")
+  @Positive(message = "amount must be greater than 0")
+  private BigDecimal amount;
 
-    private BigDecimal amount;
+  @NotNull(message = "Missing type")
+  @Pattern(regexp = "(?i)DEBIT|CREDIT", message = "Type must be either DEBIT or CREDIT")
+  private String type;
 
-    private String type;
+  @NotNull(message = "Missing transactionDate")
+  private LocalDateTime transactionDate;
 
-    private LocalDateTime transactionDate;
-
-    private Long categoryId;
-
+  @NotNull(message = "Missing categoryId")
+  @Positive(message = "categoryId must be greater than 0")
+  private Long categoryId;
 }

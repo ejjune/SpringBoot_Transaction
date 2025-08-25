@@ -8,30 +8,32 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 @Entity
 public class Transaction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-    private BigDecimal amount;
+  private BigDecimal amount;
 
-    private String type;
+  private String type;
 
-    private LocalDateTime transactionDate;
+  private LocalDateTime transactionDate;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+  @ManyToOne
+  @JoinColumn(name = "category_id")
+  private Category category;
 
-    private LocalDateTime createdDate;
+  private LocalDateTime createdDate;
 
-    private LocalDateTime updatedDate;
+  private LocalDateTime updatedDate;
 }
