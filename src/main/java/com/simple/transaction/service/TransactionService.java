@@ -5,5 +5,5 @@ import com.simple.transaction.service.model.TransactionModel;
 
 public interface TransactionService {
 
-    Transaction addTransaction(TransactionModel transactionModel);
+  Transaction addTransaction(TransactionModel transactionModel);
 }
