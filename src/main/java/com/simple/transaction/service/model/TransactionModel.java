@@ -1,5 +1,7 @@
 package com.simple.transaction.service.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
@@ -20,11 +22,12 @@ public class TransactionModel {
   @Positive(message = "amount must be greater than 0")
   private BigDecimal amount;
 
-  @NotNull(message = "Missing type")
+  @NotBlank(message = "Missing type")
   @Pattern(regexp = "(?i)DEBIT|CREDIT", message = "Type must be either DEBIT or CREDIT")
   private String type;
 
   @NotNull(message = "Missing transactionDate")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime transactionDate;
 
   @NotNull(message = "Missing categoryId")
