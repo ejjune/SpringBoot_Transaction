@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -21,7 +23,7 @@ public class Transaction {
 
   @ManyToOne
   @JoinColumn(name = "user_id")
-  private User user;
+  private Users users;
 
   private BigDecimal amount;
 
@@ -36,4 +38,15 @@ public class Transaction {
   private LocalDateTime createdDate;
 
   private LocalDateTime updatedDate;
+
+  @PrePersist
+  void prePersist() {
+    createdDate = LocalDateTime.now();
+    updatedDate = LocalDateTime.now();
+  }
+
+  @PreUpdate
+  void preUpdate() {
+    updatedDate = LocalDateTime.now();
+  }
 }

@@ -1,6 +1,5 @@
 package com.simple.transaction.service.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,17 +9,17 @@ import lombok.Data;
 
 @Data
 @Entity
-public class User {
+public class Users {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String firstName;
+  private String firstName;
 
-    private String fullName;
+  private String fullName;
 
-    private LocalDateTime createdDate;
+  private LocalDateTime createdDate;
 
-    private LocalDateTime updatedDate;
+  private LocalDateTime updatedDate;
 }
