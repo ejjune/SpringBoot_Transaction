@@ -1,4 +1,4 @@
-package com.simple.transaction.service.model;
+package com.simple.transaction.service.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class TransactionModel {
+public class TransactionRequest {
 
   @NotNull(message = "Missing userId")
   @Positive(message = "userId must be greater than 0")

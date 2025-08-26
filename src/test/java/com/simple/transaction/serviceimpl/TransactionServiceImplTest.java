@@ -7,7 +7,9 @@ import com.simple.transaction.service.TransactionService;
 import com.simple.transaction.service.entity.Category;
 import com.simple.transaction.service.entity.Transaction;
 import com.simple.transaction.service.entity.Users;
-import com.simple.transaction.service.model.TransactionModel;
+import com.simple.transaction.service.request.TransactionRequest;
+import com.simple.transaction.service.response.TransactionResponse;
+import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +51,7 @@ class TransactionServiceImplTest {
 
     Transaction transaction =
         transactionService.addTransaction(
-            TransactionModel.builder().categoryId(1L).userId(1L).build());
+            TransactionRequest.builder().categoryId(1L).userId(1L).build());
 
     assertEquals(1L, transaction.getId());
   }
@@ -64,12 +66,11 @@ class TransactionServiceImplTest {
     Mockito.when(transactionRepository.save(Mockito.any()))
         .thenReturn(Transaction.builder().id(1L).build());
 
+    TransactionRequest transactionRequest =
+        TransactionRequest.builder().categoryId(1L).userId(1L).build();
     RuntimeException runtimeException =
         assertThrows(
-            RuntimeException.class,
-            () ->
-                transactionService.addTransaction(
-                    TransactionModel.builder().categoryId(1L).userId(1L).build()));
+            RuntimeException.class, () -> transactionService.addTransaction(transactionRequest));
 
     assertEquals("Category Not Found", runtimeException.getMessage());
   }
@@ -84,13 +85,28 @@ class TransactionServiceImplTest {
     Mockito.when(transactionRepository.save(Mockito.any()))
         .thenReturn(Transaction.builder().id(1L).build());
 
+    TransactionRequest transactionRequest =
+        TransactionRequest.builder().categoryId(1L).userId(1L).build();
     RuntimeException runtimeException =
         assertThrows(
-            RuntimeException.class,
-            () ->
-                transactionService.addTransaction(
-                    TransactionModel.builder().categoryId(1L).userId(1L).build()));
+            RuntimeException.class, () -> transactionService.addTransaction(transactionRequest));
 
     assertEquals("User Not Found", runtimeException.getMessage());
+  }
+
+  @Test
+  void shouldReturnListOfTransactions() {
+    Mockito.when(transactionRepository.findByUsersId(1L))
+        .thenReturn(
+            List.of(
+                Transaction.builder()
+                    .id(1L)
+                    .category(Category.builder().name("category").build())
+                    .build()));
+
+    List<TransactionResponse> transactions = transactionService.getTransactions(1L);
+
+    assertNotNull(transactions);
+    assertEquals(1, transactions.size());
   }
 }

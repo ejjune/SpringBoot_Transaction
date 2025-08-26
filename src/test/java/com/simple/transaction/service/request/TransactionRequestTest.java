@@ -1,4 +1,4 @@
-package com.simple.transaction.service.model;
+package com.simple.transaction.service.request;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,7 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class TransactionModelTest {
+class TransactionRequestTest {
 
   private Validator validator;
 
@@ -24,35 +24,36 @@ class TransactionModelTest {
 
   @ParameterizedTest(name = "{0}")
   @MethodSource("invalidTransactionModels")
-  void shouldFail(String title, String object, TransactionModel transactionModel) {
-    Set<ConstraintViolation<TransactionModel>> violationSet = validator.validate(transactionModel);
+  void shouldFail(String title, String object, TransactionRequest transactionRequest) {
+    Set<ConstraintViolation<TransactionRequest>> violationSet =
+        validator.validate(transactionRequest);
 
-    assertThat(violationSet).anyMatch(v -> v.getMessage().toString().equalsIgnoreCase(object));
+    assertThat(violationSet).anyMatch(v -> v.getMessage().equalsIgnoreCase(object));
   }
 
   public static Stream<Arguments> invalidTransactionModels() {
     return Stream.of(
-        Arguments.of("No userId", "Missing userId", TransactionModel.builder().build()),
+        Arguments.of("No userId", "Missing userId", TransactionRequest.builder().build()),
         Arguments.of(
             "Negative userId",
             "userId must be greater than 0",
-            TransactionModel.builder().userId(-1L).build()),
-        Arguments.of("No Amount", "Missing amount", TransactionModel.builder().build()),
+            TransactionRequest.builder().userId(-1L).build()),
+        Arguments.of("No Amount", "Missing amount", TransactionRequest.builder().build()),
         Arguments.of(
             "Negative Amount",
             "amount must be greater than 0",
-            TransactionModel.builder().amount(BigDecimal.valueOf(-1)).build()),
-        Arguments.of("No type", "Missing type", TransactionModel.builder().build()),
+            TransactionRequest.builder().amount(BigDecimal.valueOf(-1)).build()),
+        Arguments.of("No type", "Missing type", TransactionRequest.builder().build()),
         Arguments.of(
             "Incorrect type",
             "Type must be either DEBIT or CREDIT",
-            TransactionModel.builder().type("Incorrect").build()),
+            TransactionRequest.builder().type("Incorrect").build()),
         Arguments.of(
-            "No transaction date", "Missing transactionDate", TransactionModel.builder().build()),
-        Arguments.of("No categoryId", "Missing categoryId", TransactionModel.builder().build()),
+            "No transaction date", "Missing transactionDate", TransactionRequest.builder().build()),
+        Arguments.of("No categoryId", "Missing categoryId", TransactionRequest.builder().build()),
         Arguments.of(
             "Negative categoryId",
             "categoryId must be greater than 0",
-            TransactionModel.builder().categoryId(-1L).build()));
+            TransactionRequest.builder().categoryId(-1L).build()));
   }
 }
